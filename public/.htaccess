@@ -5,21 +5,40 @@
 
     RewriteEngine On
 
-    # Handle Authorization Header
+    # Quitar index.php de URLs
+    RewriteCond %{REQUEST_URI} ^/index\.php
+    RewriteRule ^index\.php(.*)$ /$1 [R=301,L]
+
+    # Headers necesarios para APIs y frontend
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Handle X-XSRF-Token Header
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
-    # Redirect Trailing Slashes If Not A Folder...
+    # Redirección de slashes finales
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # Front controller
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Bloquear acceso a archivos sensibles
+<FilesMatch "\.(env|git|htaccess|htpasswd|ini|log|conf|sql)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<Files composer.lock>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files artisan>
+    Order allow,deny
+    Deny from all
+</Files>
