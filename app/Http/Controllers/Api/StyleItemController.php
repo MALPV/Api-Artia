@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\StyleItem;
 use Illuminate\Http\Request;
+use App\Models\CategoryStyle;
 use Illuminate\Validation\ValidationException;
 
 
@@ -26,7 +27,7 @@ class StyleItemController extends Controller
         try {
             $validated = $request->validate([
                 'code' => 'required|string|max:255',
-                'category' => 'required|string|max:255',
+                'category_id' => 'required|integer|exists:category_styles,id',
                 'extraPrompt' => 'nullable|string',
                 'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             ]);
@@ -81,7 +82,7 @@ class StyleItemController extends Controller
         try {
             $validated = $request->validate([
                 'code' => 'sometimes|required|string|max:255',
-                'category' => 'sometimes|required|string|max:255',
+                'category_id' => 'sometimes|required|integer|exists:category_styles,id',
                 'extraPrompt' => 'nullable|string',
                 'url' => 'sometimes|required|string|max:255',
             ]);

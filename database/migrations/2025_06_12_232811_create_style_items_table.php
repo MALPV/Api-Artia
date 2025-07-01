@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('style_items', function (Blueprint $table) {
             $table->id();  // id autoincremental
             $table->string('code');
-            $table->string('category');
+            $table->foreignId('category_id')->constrained('category_styles')->onDelete('cascade');
             $table->text('extraPrompt');
             $table->string('url');
             $table->timestamps(); // created_at y updated_at

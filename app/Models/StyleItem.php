@@ -8,8 +8,13 @@ class StyleItem extends Model
 {
     protected $fillable = [
         'code',
-        'category',
+        'category_id',
         'extraPrompt',
         'url',
     ];
+
+    public function categoryStyle()
+    {
+        return $this->belongsTo(CategoryStyle::class);
+    }
 }
